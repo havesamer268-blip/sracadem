@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أكاديمية سامر - Samer Academy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #27ae60;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            transition: all 0.3s;
+        }
+        .navbar { background-color: var(--primary-color); }
+        .hero-section {
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        .course-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            margin-bottom: 30px;
+            background: blanchedalmond;;
+        }
+        .course-card:hover { transform: translateY(-10px); }
+        .ai-chat-box {
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 5px solid var(--accent-color);
+        }
+        iframe { border-radius: 10px; width: 100%; height: 200px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark shadow">
+    <div class="container">
+        <a class="navbar-brand" href="#">🎓 اكادمية سامر</a>
+        <select id="langSelector" class="form-select" style="width: auto;" onchange="changeLanguage()">
+            <option value="ar">العربية</option>
+            <option value="en">English</option>
+            <option value="fa">فارسی</option>
+            <option value="ku">Kurdî</option>
+            <option value="fr">Français</option>
+            <option value="zh">中文</option>
+        </select>
+    </div>
+</nav>
+
+<header class="hero-section">
+    <div class="container">
+        <h1 id="welcomeMsg">مرحباً بك في أكاديمية سامر</h1>
+        <p id="subTitle">بوابتك لتعلم البرمجة بأحدث التقنيات والذكاء الاصطناعي</p>
+    </div>
+</header>
+
+<div class="container mt-5">
+    <div class="row mb-5">
+        <div class="col-md-8 mx-auto">
+            <div class="ai-chat-box shadow-sm">
+                <h5 id="aiTitle">🤖 مساعد سامر الذكي (AI)</h5>
+                <div class="input-group mt-3">
+                    <input type="text" id="aiInput" class="form-control" placeholder="اسأل عن أي كود برمجي...">
+                    <button class="btn btn-success" onclick="askAI()">اسأل الآن</button>
+                </div>
+                <div id="aiResponse" class="mt-3 text-muted" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="coursesGrid">
+        </div>
+</div>
+
+<script>
+    // قاعدة البيانات للغات والفيديوهات
+    const translations = {
+        ar: {
+            welcome: "مرحباً بك في أكاديمية سامر",
+            sub: "تعلم البرمجة بأفضل المصادر العالمية",
+            ai: "🤖 مساعد سامر الذكي",
+            courses: [
+                { name: "لغة بايثون (Python)", id: "rfscVS0vtbw" },
+                { name: "جافا سكريبت (JS)", id: "W6NZfCO5SIk" },
+                { name: "لغة C++", id: "vLnPwxZdW4Y" }
+            ]
+        },
+        en: {
+            welcome: "Welcome to Samer Academy",
+            sub: "Master coding with AI-powered education",
+            ai: "🤖 Samer AI Assistant",
+            courses: [
+                { name: "Python Programming", id: "_uQrJ0TkZlc" },
+                { name: "JavaScript Mastery", id: "PkZNo7MFNFg" },
+                { name: "C++ Basics", id: "8jLOx1hD3_o" }
+            ]
+        },
+        fa: {
+            welcome: "به آکادمی سامر خوش آمدید",
+            sub: "آموزش برنامه نویسی با هوش مصنوعی",
+            ai: "🤖 دستیار هوشمند",
+            courses: [
+                { name: "آموزش پایتون", id: "HndV8799a_E" },
+                { name: "جاوا اسکریپت", id: "fXvI9_F96Sg" },
+                { name: "برنامه نویسی C++", id: "mE9mKAsm1fE" }
+            ]
+        },
+        // يمكن إضافة باقي اللغات بنفس الطريقة هنا
+    };
+
+    function changeLanguage() {
+        const lang = document.getElementById('langSelector').value;
+        const data = translations[lang] || translations['en'];
+        
+        // تحديث النصوص
+        document.getElementById('welcomeMsg').innerText = data.welcome;
+        document.getElementById('subTitle').innerText = data.sub;
+        document.getElementById('aiTitle').innerText = data.ai;
+        
+        // تحديث اتجاه الصفحة
+        document.body.dir = (lang === 'ar' || lang === 'fa' || lang === 'ku') ? 'rtl' : 'ltr';
+
+        // تحديث الكورسات
+        const grid = document.getElementById('coursesGrid');
+        grid.innerHTML = '';
+        data.courses.forEach(course => {
+            grid.innerHTML += `
+                <div class="col-md-4">
+                    <div class="card course-card p-3 text-center">
+                        <h4>${course.name}</h4>
+                        <iframe src="https://www.youtube.com/embed/${course.id}" frameborder="0" allowfullscreen></iframe>
+                        <button class="btn btn-outline-primary mt-3">ابدأ الدرس الآن</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function askAI(AIzaSyAUR1GEZNkwdnlYQIGkG6K-qSRgkH-QA-o) {
+        const input = document.getElementById('aiInput').value;
+        const responseDiv = document.getElementById('aiResponse');
+        if(input) {
+            responseDiv.style.display = 'block';
+            responseDiv.innerHTML = "<strong>المساعد الذكي:</strong> جاري تحليل سؤالك... (هنا يتم الربط مع API الذكاء الاصطناعي لإعطائك إجابة حقيقية حول " + input + ")";
+        }
+    }
+
+    // تشغيل اللغة الافتراضية عند التحميل
+    window.onload = changeLanguage;
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
