@@ -1,163 +1,247 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية سامر - Samer Academy</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --accent-color: #27ae60;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-            transition: all 0.3s;
-        }
-        .navbar { background-color: var(--primary-color); }
-        .hero-section {
-            background: linear-gradient(135deg, #2c3e50, #4ca1af);
-            color: white;
-            padding: 60px 0;
-            text-align: center;
-        }
-        .course-card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-            margin-bottom: 30px;
-            background: blanchedalmond;;
-        }
-        .course-card:hover { transform: translateY(-10px); }
-        .ai-chat-box {
-            background: #fff;
-            border-radius: 15px;
-            padding: 20px;
-            border-left: 5px solid var(--accent-color);
-        }
-        iframe { border-radius: 10px; width: 100%; height: 200px; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ITEMO - Smart Store</title>
+  <style>
+    :root {
+      --bg:#0b1020;--card:#131a2e;--muted:#9ea7c2;--text:#f5f7ff;--brand:#4f7cff;--brand2:#00d4ff;--ok:#0ecb81;--warn:#ffb020;
+    }
+    *{box-sizing:border-box} body{margin:0;font-family:Segoe UI,Tahoma,Arial,sans-serif;background:linear-gradient(135deg,#070b17,#111831 40%,#0b1020);color:var(--text)}
+    .hidden{display:none!important}
+    .screen{min-height:100vh;padding:18px}
+    .center{display:grid;place-items:center}
+    .card{background:rgba(19,26,46,.92);border:1px solid #273252;border-radius:18px;box-shadow:0 10px 35px rgba(0,0,0,.35)}
+    .auth-card{max-width:460px;width:100%;padding:22px}
+    h1,h2,h3{margin:8px 0}
+    .logo{font-size:2rem;font-weight:900;background:linear-gradient(90deg,var(--brand),var(--brand2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .muted{color:var(--muted)}
+    input,select,button,textarea{width:100%;padding:11px 12px;margin-top:8px;border-radius:10px;border:1px solid #324063;background:#0d1428;color:var(--text)}
+    button{cursor:pointer;background:linear-gradient(90deg,var(--brand),var(--brand2));border:none;color:#fff;font-weight:700}
+    button.secondary{background:#243154}
+    .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+    .nav button{width:auto;padding:9px 14px}
+    .layout{display:grid;grid-template-columns:260px 1fr;gap:14px}
+    .sidebar,.main{padding:14px}
+    .chip{display:inline-block;padding:5px 10px;background:#1e2a4a;border-radius:999px;font-size:.85rem}
+    .banner{padding:15px;border-radius:14px;background:linear-gradient(110deg,#1a2550,#11314f);margin-bottom:12px}
+    .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+    .product{padding:10px}
+    .product img{width:100%;height:120px;object-fit:cover;border-radius:8px}
+    .price{color:#70ffbe;font-weight:700}
+    .list-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed #314069}
+    #toast{position:fixed;bottom:16px;right:16px;background:#14203d;color:#fff;padding:10px 14px;border-radius:10px;border:1px solid #3d4f84}
+    .splash-logo{font-size:3.3rem;letter-spacing:2px}
+    @media(max-width:860px){.layout{grid-template-columns:1fr}.row{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
+  <div id="splash" class="screen center">
+    <div class="card auth-card center" style="height:300px;text-align:center;">
+      <div>
+        <div class="logo splash-logo">ITEMO</div>
+        <p class="muted" id="splashText">تجربة تسوّق ذكية وسريعة وآمنة...</p>
+      </div>
+    </div>
+  </div>
 
-<nav class="navbar navbar-dark shadow">
-    <div class="container">
-        <a class="navbar-brand" href="#">🎓 اكادمية سامر</a>
-        <select id="langSelector" class="form-select" style="width: auto;" onchange="changeLanguage()">
-            <option value="ar">العربية</option>
-            <option value="en">English</option>
-            <option value="fa">فارسی</option>
-            <option value="ku">Kurdî</option>
-            <option value="fr">Français</option>
-            <option value="zh">中文</option>
+  <div id="auth" class="screen center hidden">
+    <div class="card auth-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+        <div>
+          <div class="logo">ITEMO</div>
+          <small class="muted" id="authTitle">تسجيل الدخول الاحترافي</small>
+        </div>
+        <select id="lang" onchange="setLang(this.value)">
+          <option value="ar">العربية</option><option value="en">English</option><option value="ku">Kurdî</option><option value="fa">فارسی</option><option value="fr">Français</option>
         </select>
-    </div>
-</nav>
+      </div>
 
-<header class="hero-section">
-    <div class="container">
-        <h1 id="welcomeMsg">مرحباً بك في أكاديمية سامر</h1>
-        <p id="subTitle">بوابتك لتعلم البرمجة بأحدث التقنيات والذكاء الاصطناعي</p>
-    </div>
-</header>
+      <div class="row" style="margin-top:12px;">
+        <button class="secondary" onclick="switchTab('login')" id="loginBtn">تسجيل دخول</button>
+        <button class="secondary" onclick="switchTab('register')" id="registerBtn">حساب جديد</button>
+      </div>
 
-<div class="container mt-5">
-    <div class="row mb-5">
-        <div class="col-md-8 mx-auto">
-            <div class="ai-chat-box shadow-sm">
-                <h5 id="aiTitle">🤖 مساعد سامر الذكي (AI)</h5>
-                <div class="input-group mt-3">
-                    <input type="text" id="aiInput" class="form-control" placeholder="اسأل عن أي كود برمجي...">
-                    <button class="btn btn-success" onclick="askAI()">اسأل الآن</button>
-                </div>
-                <div id="aiResponse" class="mt-3 text-muted" style="display:none;"></div>
-            </div>
+      <form id="loginForm">
+        <input id="loginEmail" type="email" placeholder="البريد الإلكتروني" required />
+        <input id="loginPassword" type="password" placeholder="كلمة المرور" required />
+        <button type="submit" id="signInTxt">دخول</button>
+      </form>
+
+      <form id="registerForm" class="hidden">
+        <input id="regName" placeholder="الاسم الكامل" required />
+        <div class="row"><input id="regEmail" type="email" placeholder="البريد" required/><input id="regPhone" placeholder="رقم الهاتف" required/></div>
+        <div class="row"><input id="regAge" type="number" placeholder="العمر" min="10" max="100" required/><input id="regPassword" type="password" placeholder="كلمة المرور" required/></div>
+        <button type="button" onclick="register()" id="createTxt">إنشاء الحساب</button>
+      </form>
+
+      <hr style="border-color:#2b3760;margin:16px 0">
+      <h4 id="forgotTitle">نسيت كلمة السر</h4>
+      <input id="fpEmail" type="email" placeholder="اكتب البريد لإرسال OTP" />
+      <div class="row">
+        <button type="button" onclick="sendOtp()" id="sendOtpTxt">إرسال رمز 6 أرقام</button>
+        <input id="otp" placeholder="OTP" maxlength="6" />
+      </div>
+      <input id="newPass" type="password" placeholder="كلمة مرور جديدة (يجب حرف كبير)" />
+      <button type="button" onclick="resetPassword()" id="resetTxt">تحديث كلمة المرور</button>
+      <small class="muted" id="mailNote">الإرسال الفعلي يحتاج ربط API بريد (تم تجهيز مكان الربط).</small>
+    </div>
+  </div>
+
+  <div id="app" class="screen hidden">
+    <div class="layout">
+      <aside class="card sidebar">
+        <h3 class="logo" style="font-size:1.4rem">ITEMO</h3>
+        <p class="muted" id="welcomeUser"></p>
+        <div class="nav">
+          <button onclick="showPage('home')" id="tabHome">الرئيسية</button>
+          <button onclick="showPage('cart')" id="tabCart">السلة</button>
+          <button onclick="showPage('track')" id="tabTrack">تتبع الطلب</button>
+          <button onclick="showPage('settings')" id="tabSettings">إعداداتي</button>
         </div>
-    </div>
+      </aside>
 
-    <div class="row" id="coursesGrid">
-        </div>
-</div>
+      <main class="card main">
+        <section id="page-home">
+          <div class="banner">
+            <h2 id="homeTitle">عروض ITEMO الذكية</h2>
+            <span class="chip">Women • Men • Kids • Home • Car</span>
+          </div>
+          <div class="row">
+            <input id="search" placeholder="بحث سريع..." oninput="renderProducts()" />
+            <select id="filterCat" onchange="renderProducts()">
+              <option value="all">كل الأقسام</option>
+              <option value="women">ملابس نسائية</option>
+              <option value="men">ملابس رجالية</option>
+              <option value="kids">ملابس أطفال</option>
+              <option value="home">أغراض منزلية</option>
+              <option value="car">أغراض سيارة</option>
+              <option value="shoes">أحذية</option>
+              <option value="beauty">عناية شخصية</option>
+            </select>
+          </div>
+          <div id="products" class="products" style="margin-top:10px"></div>
+        </section>
+
+        <section id="page-cart" class="hidden">
+          <h2>🛒 سلة المشتريات</h2>
+          <div id="cartList"></div>
+          <input id="coupon" placeholder="كود خصم (SAVE10)" />
+          <button onclick="checkout()">إتمام الطلب</button>
+          <h3 id="total"></h3>
+        </section>
+
+        <section id="page-track" class="hidden">
+          <h2>📦 تتبع الطلب</h2>
+          <p id="track"></p>
+        </section>
+
+        <section id="page-settings" class="hidden">
+          <h2>⚙️ إعداداتي</h2>
+          <div id="profile"></div>
+          <p>WhatsApp: <a style="color:#88d5ff" href="https://wa.me/9647865536522" target="_blank">07865536522</a></p>
+          <button class="secondary" onclick="logout()">تسجيل الخروج</button>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div id="toast" class="hidden"></div>
 
 <script>
-    // قاعدة البيانات للغات والفيديوهات
-    const translations = {
-        ar: {
-            welcome: "مرحباً بك في أكاديمية سامر",
-            sub: "تعلم البرمجة بأفضل المصادر العالمية",
-            ai: "🤖 مساعد سامر الذكي",
-            courses: [
-                { name: "لغة بايثون (Python)", id: "rfscVS0vtbw" },
-                { name: "جافا سكريبت (JS)", id: "W6NZfCO5SIk" },
-                { name: "لغة C++", id: "vLnPwxZdW4Y" }
-            ]
-        },
-        en: {
-            welcome: "Welcome to Samer Academy",
-            sub: "Master coding with AI-powered education",
-            ai: "🤖 Samer AI Assistant",
-            courses: [
-                { name: "Python Programming", id: "_uQrJ0TkZlc" },
-                { name: "JavaScript Mastery", id: "PkZNo7MFNFg" },
-                { name: "C++ Basics", id: "8jLOx1hD3_o" }
-            ]
-        },
-        fa: {
-            welcome: "به آکادمی سامر خوش آمدید",
-            sub: "آموزش برنامه نویسی با هوش مصنوعی",
-            ai: "🤖 دستیار هوشمند",
-            courses: [
-                { name: "آموزش پایتون", id: "HndV8799a_E" },
-                { name: "جاوا اسکریپت", id: "fXvI9_F96Sg" },
-                { name: "برنامه نویسی C++", id: "mE9mKAsm1fE" }
-            ]
-        },
-        // يمكن إضافة باقي اللغات بنفس الطريقة هنا
-    };
+const i18n={
+  ar:{auth:"تسجيل الدخول الاحترافي",mailNote:"الإرسال الفعلي يحتاج ربط API بريد (تم تجهيز مكان الربط)."},
+  en:{auth:"Professional Sign In",mailNote:"Real email sending requires connecting an email API endpoint."},
+  ku:{auth:"چوونەژوورەوەی پیشەیی",mailNote:"بۆ ناردنی ڕاستەقینەی ئیمەیڵ پێویستە API گرێبدەیت."},
+  fa:{auth:"ورود حرفه‌ای",mailNote:"ارسال واقعی ایمیل نیاز به اتصال API ایمیل دارد."},
+  fr:{auth:"Connexion professionnelle",mailNote:"L’envoi réel d’email nécessite une API email."}
+};
 
-    function changeLanguage() {
-        const lang = document.getElementById('langSelector').value;
-        const data = translations[lang] || translations['en'];
-        
-        // تحديث النصوص
-        document.getElementById('welcomeMsg').innerText = data.welcome;
-        document.getElementById('subTitle').innerText = data.sub;
-        document.getElementById('aiTitle').innerText = data.ai;
-        
-        // تحديث اتجاه الصفحة
-        document.body.dir = (lang === 'ar' || lang === 'fa' || lang === 'ku') ? 'rtl' : 'ltr';
+const products=[
+{id:1,n:"فستان نسائي",cat:"women",price:35,img:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600"},
+{id:2,n:"قميص رجالي",cat:"men",price:22,img:"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600"},
+{id:3,n:"طقم أطفال",cat:"kids",price:18,img:"https://images.unsplash.com/photo-1519238360530-3726c3a94b8e?w=600"},
+{id:4,n:"مقلاة مطبخ",cat:"home",price:27,img:"https://images.unsplash.com/photo-1583778176476-4a8b02a64c84?w=600"},
+{id:5,n:"منظم سيارة",cat:"car",price:14,img:"https://images.unsplash.com/photo-1517142089942-ba376ce32a2e?w=600"},
+{id:6,n:"حذاء رياضي",cat:"shoes",price:40,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600"},
+{id:7,n:"عناية بالبشرة",cat:"beauty",price:19,img:"https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=600"}
+];
+let state={tab:'login',user:null,cart:[],order:null};
+const users=JSON.parse(localStorage.getItem('itemo_users')||'{}');
+const otpStore=JSON.parse(localStorage.getItem('itemo_otp')||'{}');
 
-        // تحديث الكورسات
-        const grid = document.getElementById('coursesGrid');
-        grid.innerHTML = '';
-        data.courses.forEach(course => {
-            grid.innerHTML += `
-                <div class="col-md-4">
-                    <div class="card course-card p-3 text-center">
-                        <h4>${course.name}</h4>
-                        <iframe src="https://www.youtube.com/embed/${course.id}" frameborder="0" allowfullscreen></iframe>
-                        <button class="btn btn-outline-primary mt-3">ابدأ الدرس الآن</button>
-                    </div>
-                </div>
-            `;
-        });
-    }
+function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),2200)}
+function save(){localStorage.setItem('itemo_users',JSON.stringify(users));localStorage.setItem('itemo_otp',JSON.stringify(otpStore));}
+function switchTab(tab){state.tab=tab;document.getElementById('loginForm').classList.toggle('hidden',tab!=='login');document.getElementById('registerForm').classList.toggle('hidden',tab!=='register');}
+function hasUppercase(p){return /[A-Z]/.test(p)}
+function register(){
+  const name=regName.value.trim(),email=regEmail.value.trim().toLowerCase(),phone=regPhone.value.trim(),age=regAge.value.trim(),password=regPassword.value;
+  if(!name||!email||!phone||!age||!password) return toast('املأ جميع الحقول');
+  if(!hasUppercase(password)) return toast('كلمة السر يجب تحتوي حرف كبير');
+  if(users[email]) return toast('الحساب موجود مسبقاً');
+  users[email]={name,email,phone,age,password};save();toast('تم إنشاء الحساب ✅');switchTab('login');
+}
 
-    function askAI(AIzaSyAUR1GEZNkwdnlYQIGkG6K-qSRgkH-QA-o) {
-        const input = document.getElementById('aiInput').value;
-        const responseDiv = document.getElementById('aiResponse');
-        if(input) {
-            responseDiv.style.display = 'block';
-            responseDiv.innerHTML = "<strong>المساعد الذكي:</strong> جاري تحليل سؤالك... (هنا يتم الربط مع API الذكاء الاصطناعي لإعطائك إجابة حقيقية حول " + input + ")";
-        }
-    }
+loginForm.addEventListener('submit',(e)=>{e.preventDefault();
+  const email=loginEmail.value.trim().toLowerCase(),pass=loginPassword.value;
+  const u=users[email]; if(!u||u.password!==pass) return toast('بيانات الدخول غير صحيحة');
+  state.user=u; state.cart=[]; showApp();
+});
 
-    // تشغيل اللغة الافتراضية عند التحميل
-    window.onload = changeLanguage;
+function sendOtp(){
+  const email=fpEmail.value.trim().toLowerCase(); if(!users[email]) return toast('لا يوجد حساب بهذا البريد');
+  const code=String(Math.floor(100000+Math.random()*900000));
+  otpStore[email]={code,expires:Date.now()+10*60*1000}; save();
+  console.log('OTP for',email,code);
+  // ربط حقيقي: ارسل {to: email, code} الى API خادمك ثم SMTP من gmail المذكور.
+  toast('تم إنشاء OTP وإرساله (وضع التطوير)');
+}
+
+function resetPassword(){
+  const email=fpEmail.value.trim().toLowerCase(),otp= document.getElementById('otp').value.trim(),newPass=newPassEl.value;
+  const rec=otpStore[email]; if(!rec||rec.code!==otp||Date.now()>rec.expires) return toast('OTP غير صالح');
+  if(!hasUppercase(newPass)) return toast('كلمة السر يجب تحتوي حرف كبير');
+  users[email].password=newPass; delete otpStore[email]; save(); toast('تم تحديث كلمة المرور');
+}
+const newPassEl=document.getElementById('newPass');
+
+function showApp(){auth.classList.add('hidden');app.classList.remove('hidden');welcomeUser.textContent='أهلاً '+state.user.name;renderProducts();renderCart();renderProfile();showPage('home')}
+function showPage(p){['home','cart','track','settings'].forEach(x=>document.getElementById('page-'+x).classList.toggle('hidden',x!==p));}
+function renderProducts(){
+ const q=search.value.toLowerCase(),cat=filterCat.value;
+ const list=products.filter(p=>(cat==='all'||p.cat===cat)&&p.n.toLowerCase().includes(q));
+ productsEl.innerHTML=list.map(p=>`<div class='card product'>
+  <img src='${p.img}' alt='${p.n}'/><h4>${p.n}</h4><p class='price'>$${p.price}</p>
+  <button onclick='addToCart(${p.id})'>إضافة إلى السلة</button>
+ </div>`).join('')||'<p class="muted">لا توجد منتجات</p>';
+}
+const productsEl=document.getElementById('products');
+function addToCart(id){const p=products.find(x=>x.id===id);const c=state.cart.find(x=>x.id===id);c?c.qty++:state.cart.push({...p,qty:1});renderCart();toast('تمت الإضافة ✅')}
+function renderCart(){
+  const el=document.getElementById('cartList'); if(!state.cart.length){el.innerHTML='<p class="muted">السلة فارغة</p>';total.textContent='';return}
+  el.innerHTML=state.cart.map(i=>`<div class='list-item'><span>${i.n} x${i.qty}</span><span>$${i.price*i.qty}</span><button class='secondary' style='width:auto' onclick='delItem(${i.id})'>حذف</button></div>`).join('');
+  calcTotal();
+}
+function delItem(id){state.cart=state.cart.filter(x=>x.id!==id);renderCart()}
+function calcTotal(){let sum=state.cart.reduce((a,b)=>a+b.price*b.qty,0);if(coupon.value.trim().toUpperCase()==='SAVE10')sum*=0.9;total.textContent='الإجمالي: $'+sum.toFixed(2)}
+coupon.addEventListener('input',calcTotal);
+
+function checkout(){
+  if(!state.cart.length) return toast('السلة فارغة');
+  const id='ITM'+Math.floor(Math.random()*99999);
+  state.order={id,status:'قيد المعالجة',items:state.cart};
+  track.textContent=`رقم الطلب: ${id} | الحالة: قيد المعالجة`;
+  setTimeout(()=>{if(state.order){state.order.status='تم الشحن';track.textContent=`رقم الطلب: ${id} | الحالة: تم الشحن`;}},3000);
+  setTimeout(()=>{if(state.order){state.order.status='تم التوصيل';track.textContent=`رقم الطلب: ${id} | الحالة: تم التوصيل`;toast('تم التوصيل ✅');}},7000);
+  state.cart=[];renderCart();showPage('track');
+}
+function renderProfile(){profile.innerHTML=`<p>الاسم: ${state.user.name}</p><p>البريد الإلكتروني: ${state.user.email}</p><p>الرقم: ${state.user.phone}</p><p>العمر: ${state.user.age}</p>`}
+function logout(){state.user=null;app.classList.add('hidden');auth.classList.remove('hidden');switchTab('login')}
+function setLang(l){document.documentElement.lang=l;document.documentElement.dir=['ar','ku','fa'].includes(l)?'rtl':'ltr';authTitle.textContent=i18n[l].auth;mailNote.textContent=i18n[l].mailNote;}
+
+setTimeout(()=>{splash.classList.add('hidden');auth.classList.remove('hidden');setLang('ar');switchTab('login')},1600);
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
